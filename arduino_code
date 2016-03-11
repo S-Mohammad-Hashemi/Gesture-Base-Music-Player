@@ -1,0 +1,44 @@
+int status;
+void setup() 
+{
+  Serial.begin();
+  pinMode(4,INPUT);
+  status=0;
+}
+ 
+ 
+// the loop routine runs over and over again forever:
+void loop() 
+{
+  uint8_t buffer[2];
+  
+  uint16_t d0 = digitalRead(4);
+    if(d0>0){
+        if(status==0){
+            status=1;
+        }
+        // Get the current acceleration with range of ±2g, and a conversion of 3.91×10-3 g/unit or 0.03834(m/s^2)/units. 
+        AccelerationReading acceleration = Bean.getAcceleration();
+        
+        // Format the serial output like this:    "X: 249  Y: -27   Z: -253"
+        String stringToPrint = String();
+        stringToPrint = stringToPrint + " " + acceleration.xAxis + " " + acceleration.yAxis + " " + acceleration.zAxis;
+        Serial.println(stringToPrint);
+    }
+    else{
+        if (status==1){
+            status=0;
+            String stringToPrint = String();
+            stringToPrint = "end";
+            Serial.println(stringToPrint);
+        }
+    }
+  
+ // buffer[0] = d0 & 0xFF;
+ // buffer[1] = d0 >> 8;
+  
+ // Bean.setScratchData(1, buffer, 2);
+  
+  
+  Bean.sleep(100);
+}  
