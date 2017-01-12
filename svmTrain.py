@@ -1,8 +1,3 @@
-'''
-Created on Mar 2, 2016
-
-@author: incognito
-'''
 import random
 def load_data(folder,label,X,Y,test_x,test_y):
     for k in range(100):
